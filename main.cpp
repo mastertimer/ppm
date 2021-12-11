@@ -1,20 +1,65 @@
-﻿// ppm.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <string>
+#include <vector>
 
-#include <iostream>
+using i64 = long long;
+
+std::wstring command_decomposition(const std::wstring& cmd, std::vector<std::wstring>& parameters)
+{
+    std::wstring command_name;
+	i64 i0 = cmd.size();
+	// пропуск первых пробелов
+	for (i64 i = 0; i < (i64)cmd.size(); i++)
+		if ((cmd[i] != L' ') && (cmd[i] != L'\t'))
+		{
+			i0 = i;
+			break;
+		}
+	// вычленение command_name
+	for (i64 i = i0; i < (i64)cmd.size(); i++)
+		if ((cmd[i] == L' ') || (cmd[i] == L'\t'))
+		{
+			command_name = cmd.substr(i0, i - i0);
+			break;
+		}
+	if (command_name.empty()) command_name = cmd.substr(i0, cmd.size() - i0);
+	// вычленение параметров
+	int rez = 0; // 0 - пробелы 1 - набор символов 2 - строка "safasf asf"
+	int start_p = 0;
+	for (i64 i = i0 + command_name.size(); i < (i64)cmd.size(); i++)
+	{
+		wchar_t c = cmd[i];
+		if (rez == 0)
+		{
+			if ((c == L' ') || (c == L'\t')) continue;
+			start_p = i;
+			rez = (c == L'"') ? 2 : 1;
+			continue;
+		}
+		if (rez == 1) if ((c != L' ') && (c != L'\t')) continue;
+		if (rez == 2) if (c != L'"') continue;
+		parameters.push_back(cmd.substr(start_p, i - start_p + (rez == 2)));
+		rez = 0;
+	}
+	if (rez == 1) parameters.push_back(cmd.substr(start_p, cmd.size() - start_p));
+	return command_name;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	setlocale(LC_ALL, "RU");
+    for (;;)
+    {
+        std::wcout << L">";
+        std::wstring cmd;
+		std::wcin >> cmd;
+		std::vector<std::wstring> parameters;
+		std::wstring command_name = command_decomposition(cmd, parameters);
+		if (command_name == L"a")
+		{
+
+		}
+		else
+			std::wcout << L"команда не найдена\n";
+	}
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
