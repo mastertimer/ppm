@@ -72,6 +72,50 @@ std::wstring substr(std::wstring_view s, i64 n, i64 k); // подстрока к
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+struct _rnd
+{ // (a = 521, b = 353)
+	_rnd(i64 p = 0) { init(p); }
+	u64 operator()() { i = (i + 1) & 1023; return (d[i] = d[(i + 503) & 1023] ^ d[(i + 671) & 1023]); }
+	i64 operator()(i64 m) { i = (i + 1) & 1023; return (d[i] = d[(i + 503) & 1023] ^ d[(i + 671) & 1023]) % m; }
+	double operator()(double n, double k) { return ((*this)() & 0xFFFFFFFF) * (k - n) / 0xFFFFFFFF + n; }
+	void init(u64 p);
+
+private:
+	u64 d[1024]; // предыдущие числа
+	u64 i; // последняя позиция
+};
+
+inline _rnd rnd;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+struct _bit_vector
+{
+	std::vector<u64> data;
+	uchar            bit      = 64; // сколько бит заполнено в последнем числе
+	i64              bit_read =  0; // позиция бита для чтения
+
+	bool operator==(const _bit_vector& b) const;
+	bool operator!=(const _bit_vector& b) const { return !(*this == b); }
+
+	void push(u64 a);
+	void push(u64 a, uchar n);
+	void pushnod(u64 a, u64 n); // добавить n одинаковых бит
+	void pushn1(u64 a);         // добавить ограниченное количество бит, 1xxxxxxxx
+
+	u64  pop();
+	u64  pop(uchar n);
+	u64  pop_safely();
+
+	i64  size() const;  // в битах
+	void resize(i64 v); // в битах
+
+	bool empty() const;
+	void clear();
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 struct _stack
 {
 	char* data;
@@ -95,12 +139,14 @@ struct _stack
 	t_b _stack& operator<<(const std::vector<_b>& b);
 	t_b _stack& operator<<(_b a);
 	    _stack& operator<<(const _stack& a);
-	    _stack& operator<<(const std::wstring& a);
+		_stack& operator<<(const _bit_vector& p);
+		_stack& operator<<(const std::wstring& a);
 	    void    push_data(const void* data2, i64 vdata);
 	    void    push_fill(int vdata, char c); // занести кучу одинаковых символов
 
 	    _stack& operator>>(_stack& a);
-	    _stack& operator>>(std::wstring& s);
+		_stack& operator>>(_bit_vector& p);
+		_stack& operator>>(std::wstring& s);
 	t_b _stack& operator>>(std::vector<_b>& b);
 	t_b _stack& operator>>(_b& a);
 	    void    pop_data(void* data2, i64 vdata);

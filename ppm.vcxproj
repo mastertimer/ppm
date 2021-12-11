@@ -145,17 +145,13 @@
   <ItemGroup>
     <ClCompile Include="arithmetic_coding.cpp" />
     <ClCompile Include="basic.cpp" />
-    <ClCompile Include="bit_vector.cpp" />
     <ClCompile Include="compression.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="rnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="arithmetic_coding.h" />
     <ClInclude Include="basic.h" />
-    <ClInclude Include="bit_vector.h" />
     <ClInclude Include="compression.h" />
-    <ClInclude Include="rnd.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
