@@ -2,6 +2,7 @@
 #include <chrono>
 
 #include "arithmetic_coding.h"
+#include "compression.h"
 
 std::wstring test_file = L"e:\\ppm\\data\\t110521.txt";
 
@@ -115,6 +116,41 @@ void test_arithmetic_coding(std::vector<std::wstring>& parameters)
 	std::wcout << L"максимальное время, мксек: " << std::to_wstring(maxdt) << std::endl;
 }
 
+void test_ppm(std::vector<std::wstring>& parameters)
+{
+	std::wcout << L"файл: " << test_file << std::endl;
+	std::vector<uchar> data, data2, res;
+	if (!load_file(test_file, data))
+	{
+		std::wcout << L"ошибка загрузки!" << std::endl;
+		return;
+	}
+	std::wcout << L"размер: " << std::to_wstring(data.size()) << std::endl;
+
+	i64 n = 0;
+	if (!parameters.empty()) n = std::stoi(parameters[0]);
+	if (n < 0) n = 0;
+	std::wcout << L"порядок = " << std::to_wstring(n) << std::endl;
+
+	i64 mindt = 1000000000;
+	i64 maxdt = 0;
+	i64 summdt = 0;
+
+	{
+		auto tt = std::chrono::high_resolution_clock::now();
+		ppm(data, res, n);
+		std::chrono::nanoseconds dt = std::chrono::high_resolution_clock::now() - tt;
+		i64 dtt = dt.count() / 1000;
+		if (dtt < mindt) mindt = dtt;
+		if (dtt > maxdt) maxdt = dtt;
+		summdt += dtt;
+	}
+
+	double v = res.size();
+	std::wcout << L"ppm:    " << double_to_wstring(v, 0) << std::endl;
+	std::wcout << L"время, мксек:  " << std::to_wstring(mindt) << std::endl;
+}
+
 int main()
 {
 	setlocale(LC_ALL, "RU");
@@ -127,6 +163,8 @@ int main()
 		std::wstring command_name = command_decomposition(cmd, parameters);
 		if (command_name == L"a")
 			test_arithmetic_coding(parameters);
+		else if (command_name == L"ppm")
+			test_ppm(parameters);
 		else
 			std::wcout << L"команда не найдена\n";
 	}
