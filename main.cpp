@@ -6,20 +6,20 @@
 
 std::wstring test_file = L"e:\\ppm\\data\\t110521.txt";
 
-std::wstring command_decomposition(const std::wstring& cmd, std::vector<std::wstring>& parameters)
+std::string command_decomposition(const std::string& cmd, std::vector<std::string>& parameters)
 {
-    std::wstring command_name;
+    std::string command_name;
 	i64 i0 = cmd.size();
 	// пропуск первых пробелов
 	for (i64 i = 0; i < (i64)cmd.size(); i++)
-		if ((cmd[i] != L' ') && (cmd[i] != L'\t'))
+		if ((cmd[i] != ' ') && (cmd[i] != '\t'))
 		{
 			i0 = i;
 			break;
 		}
 	// вычленение command_name
 	for (i64 i = i0; i < (i64)cmd.size(); i++)
-		if ((cmd[i] == L' ') || (cmd[i] == L'\t'))
+		if ((cmd[i] == ' ') || (cmd[i] == '\t'))
 		{
 			command_name = cmd.substr(i0, i - i0);
 			break;
@@ -33,13 +33,13 @@ std::wstring command_decomposition(const std::wstring& cmd, std::vector<std::wst
 		wchar_t c = cmd[i];
 		if (rez == 0)
 		{
-			if ((c == L' ') || (c == L'\t')) continue;
+			if ((c == ' ') || (c == '\t')) continue;
 			start_p = i;
-			rez = (c == L'"') ? 2 : 1;
+			rez = (c == '"') ? 2 : 1;
 			continue;
 		}
-		if (rez == 1) if ((c != L' ') && (c != L'\t')) continue;
-		if (rez == 2) if (c != L'"') continue;
+		if (rez == 1) if ((c != ' ') && (c != '\t')) continue;
+		if (rez == 2) if (c != '"') continue;
 		parameters.push_back(cmd.substr(start_p, i - start_p + (rez == 2)));
 		rez = 0;
 	}
@@ -47,7 +47,7 @@ std::wstring command_decomposition(const std::wstring& cmd, std::vector<std::wst
 	return command_name;
 }
 
-void test_arithmetic_coding(std::vector<std::wstring>& parameters)
+void test_arithmetic_coding(std::vector<std::string>& parameters)
 {
 	std::wcout << L"файл: " << test_file << std::endl;
 	std::vector<uchar> data, data2;
@@ -116,7 +116,7 @@ void test_arithmetic_coding(std::vector<std::wstring>& parameters)
 	std::wcout << L"максимальное время, мксек: " << std::to_wstring(maxdt) << std::endl;
 }
 
-void test_ppm(std::vector<std::wstring>& parameters)
+void test_ppm(std::vector<std::string>& parameters)
 {
 	std::wcout << L"файл: " << test_file << std::endl;
 	std::vector<uchar> data, data2, res;
@@ -151,22 +151,22 @@ void test_ppm(std::vector<std::wstring>& parameters)
 	std::wcout << L"время, мксек:  " << std::to_wstring(mindt) << std::endl;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
 	setlocale(LC_ALL, "RU");
-	std::cout << "размер указателя: " << sizeof(void*) << std::endl;
+	std::cout << argv[0] << std::endl;
     for (;;)
     {
-        std::wcout << L">";
-        std::wstring cmd;
-		std::wcin >> cmd;
-		std::vector<std::wstring> parameters;
-		std::wstring command_name = command_decomposition(cmd, parameters);
-		if (command_name == L"a")
+        std::cout << ">";
+        std::string cmd;
+		std::getline(std::cin, cmd);
+		std::vector<std::string> parameters;
+		std::string command_name = command_decomposition(cmd, parameters);
+		if (command_name == "a")
 			test_arithmetic_coding(parameters);
-		else if (command_name == L"ppm")
+		else if (command_name == "ppm")
 			test_ppm(parameters);
-		else if (command_name == L"exit")
+		else if (command_name == "exit")
 			break;
 		else
 			std::cout << "команда не найдена\n";
