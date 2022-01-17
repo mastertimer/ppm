@@ -24,7 +24,7 @@
     <ClCompile Include="compression.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\mutator\library\basic.cpp">
+    <ClCompile Include="basic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -35,7 +35,7 @@
     <ClInclude Include="compression.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\mutator\library\basic.h">
+    <ClInclude Include="basic.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
