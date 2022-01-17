@@ -1,4 +1,5 @@
-﻿#include "arithmetic_coding.h"
+﻿#include <cmath>
+#include "arithmetic_coding.h"
 
 namespace
 {
