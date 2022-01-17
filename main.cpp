@@ -154,6 +154,7 @@ void test_ppm(std::vector<std::wstring>& parameters)
 int main()
 {
 	setlocale(LC_ALL, "RU");
+	std::cout << "размер указателя: " << sizeof(void*) << std::endl;
     for (;;)
     {
         std::wcout << L">";
@@ -165,7 +166,9 @@ int main()
 			test_arithmetic_coding(parameters);
 		else if (command_name == L"ppm")
 			test_ppm(parameters);
+		else if (command_name == L"exit")
+			break;
 		else
-			std::wcout << L"команда не найдена\n";
+			std::cout << "команда не найдена\n";
 	}
 }
