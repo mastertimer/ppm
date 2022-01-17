@@ -320,7 +320,7 @@ std::string double_to_string(double a, int z)
 	s += std::to_string(b);
 	if (z < 1) return s;
 	int l = (int)s.size();
-	s.resize(1i64 + l + z);
+	s.resize(i64(1) + l + z);
 	s[l] = '.';
 	for (int i = 1; i <= z; i++)
 	{
@@ -530,7 +530,7 @@ u64 _bit_vector::pop(uchar n)
 	uchar bi = bit_read & 63;
 	bit_read += n;
 	if (bi + n <= 64) return (data[r] >> bi) & mask1(n);
-	return ((data[r] >> bi) | (data[r + 1] << (64ui8 - bi))) & mask1(n);
+	return ((data[r] >> bi) | (data[r + 1] << (uchar(64) - bi))) & mask1(n);
 }
 
 void _bit_vector::push(u64 a)
