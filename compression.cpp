@@ -95,7 +95,7 @@ uchar ppm(const std::vector<uchar>& data, std::vector<uchar>& res, u64 g)
 	uchar r1n = 6; // количество бит в активном байте
 	auto otgruz = [&](uchar bit)
 	{
-		r1 = (r1 << 1ui8) + bit;
+		r1 = (r1 << 1) + bit;
 		if (++r1n == 8)
 		{
 			res.push_back(r1);

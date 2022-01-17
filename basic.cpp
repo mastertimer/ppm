@@ -1,8 +1,5 @@
-﻿#include "basic.h"
-
-#define NOMINMAX
-#include <windows.h>
-#include <fstream>
+﻿#include <fstream>
+#include "basic.h"
 
 namespace
 {
@@ -33,46 +30,6 @@ i64 position1_64(u64 a)
 	}
 	if (i64 k = position1_8[(a >> 8) & 255]) return k + 8;
 	return position1_8[a & 255];
-}
-
-void set_clipboard_text(std::wstring_view text)
-{
-	if (OpenClipboard(0))//открываем буфер обмена
-	{
-		HGLOBAL hgBuffer;
-		char* chBuffer;
-		EmptyClipboard(); //очищаем буфер
-		size_t ll = text.size() * 2 + 2;
-		hgBuffer = GlobalAlloc(GMEM_DDESHARE, ll);//выделяем память
-		if (!hgBuffer) goto end;
-		chBuffer = (char*)GlobalLock(hgBuffer); //блокируем память
-		if (!chBuffer) goto end;
-		memcpy(chBuffer, text.data(), ll);
-		GlobalUnlock(hgBuffer);//разблокируем память
-		SetClipboardData(CF_UNICODETEXT, hgBuffer);//помещаем текст в буфер обмена
-	end:
-		CloseClipboard(); //закрываем буфер обмена
-	}
-}
-
-void set_clipboard_text(astr text)
-{
-	if (OpenClipboard(0))//открываем буфер обмена
-	{
-		HGLOBAL hgBuffer;
-		char* chBuffer;
-		EmptyClipboard(); //очищаем буфер
-		size_t ll = strlen(text) + 1;
-		hgBuffer = GlobalAlloc(GMEM_DDESHARE, ll);//выделяем память
-		if (!hgBuffer) goto end;
-		chBuffer = (char*)GlobalLock(hgBuffer); //блокируем память
-		if (!chBuffer) goto end;
-		strcpy_s(chBuffer, ll, LPCSTR(text));
-		GlobalUnlock(hgBuffer);//разблокируем память
-		SetClipboardData(CF_TEXT, hgBuffer);//помещаем текст в буфер обмена
-	end:
-		CloseClipboard(); //закрываем буфер обмена
-	}
 }
 
 bool save_file(std::wstring_view fn, const char* data, i64 n)
