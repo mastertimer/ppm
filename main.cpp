@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
 	{
 		std::filesystem::path fn = argv[0];
 		fn.remove_filename();
-		exe_path = fn.c_str();
+		exe_path = fn.generic_wstring();
 	}
 	setlocale(LC_ALL, "RU");
 	if (exe_path[1] == ':')
