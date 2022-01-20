@@ -1,12 +1,11 @@
 ﻿#include <iostream>
 #include <chrono>
-#include <filesystem>
 
 #include "arithmetic_coding.h"
 #include "compression.h"
 
-std::wstring test_file = L"..\\..\\data\\t110521.txt";
-std::wstring test_file2 = L"\\data\\t110521.txt";
+std::wstring test_file = L"e:\\ppm\\data\\t110521.txt";
+std::wstring test_file2 = L"data\\t110521.txt";
 
 std::string command_decomposition(const std::string& cmd, std::vector<std::string>& parameters)
 {
@@ -156,15 +155,10 @@ void test_ppm(std::vector<std::string>& parameters)
 int main(int argc, char* argv[])
 {
 	{
-		std::filesystem::path fn = argv[0];
-		fn.remove_filename();
-		exe_path = fn.generic_wstring();
+		std::string s = argv[0];
+		if (s[1] != ':') test_file = test_file2;
 	}
 	setlocale(LC_ALL, "RU");
-	if (exe_path[1] == ':')
-		test_file = exe_path + test_file;
-	else
-		test_file = exe_path + test_file2;
 	std::wcout << test_file << std::endl;
     for (;;)
     {
