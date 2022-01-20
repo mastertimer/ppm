@@ -5,7 +5,7 @@
 #include "compression.h"
 
 std::wstring test_file = L"e:\\ppm\\data\\t110521.txt";
-std::wstring test_file2 = L"data\\t110521.txt";
+std::wstring test_file2 = L"data/t110521.txt";
 
 std::string command_decomposition(const std::string& cmd, std::vector<std::string>& parameters)
 {
@@ -55,7 +55,7 @@ void test_arithmetic_coding(std::vector<std::string>& parameters)
 	_bit_vector res;
 	if (!load_file(test_file, data))
 	{
-		std::wcout << L"ошибка загрузки!";
+		std::wcout << L"ошибка загрузки!" << std::endl;
 		return;
 	}
 	std::wcout << L"размер:            " << std::to_wstring(data.size()) << std::endl;
