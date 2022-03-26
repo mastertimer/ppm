@@ -41,6 +41,8 @@ std::vector<uchar> generate_vector(_frequency2& f)
 
 constexpr double kkk4 = 22.0; // 22.0
 
+double kkk6[] = { 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0 }; // 22.0
+
 struct _frequency
 {
 	double frequency[256];
@@ -50,11 +52,24 @@ struct _frequency
 		for (int i = 0; i < 256; i++) frequency[i] = kkk4 / 256.0;
 	}
 
+	void start(double kk5) noexcept
+	{
+		for (int i = 0; i < 256; i++) frequency[i] = kk5 / 256.0;
+	}
+
 	void norm()
 	{
 		double s = 0;
 		for (int i = 0; i < 256; i++) s += frequency[i];
 		s = kkk4 / s;
+		for (int i = 0; i < 256; i++) frequency[i] *= s;
+	}
+
+	void norm(double kk5)
+	{
+		double s = 0;
+		for (int i = 0; i < 256; i++) s += frequency[i];
+		s = kk5 / s;
 		for (int i = 0; i < 256; i++) frequency[i] *= s;
 	}
 
@@ -124,6 +139,105 @@ uchar ppm(const std::vector<uchar>& data, std::vector<uchar>& res, u64 g)
 		{
 			if (j > i) break;
 			f.norm();
+			ppc2 = &ppc2->next[data[i - j]];
+			for (auto& jj : ppc2->next) f.frequency[jj.first] += jj.second.frequency;
+		}
+		//		f.norm();
+		f.norm(1073741000, frequency);
+
+		ppc.frequency++;
+		ppc.next[(uchar)c].frequency++;
+		ppc2 = &ppc;
+		for (u64 j = 1; j <= g; j++)
+		{
+			if (j > i) break;
+			ppc2 = &ppc2->next[data[i - j]];
+			ppc2->next[(uchar)c].frequency++;
+		}
+
+
+
+		u64 eb = end - begin;
+		end = begin + eb * frequency[c + 1] / frequency[256];
+		begin += eb * frequency[c] / frequency[256];
+	start:
+		if (end <= h2)
+		{
+			otgruz(0);
+			while (bad_bit) { otgruz(1); bad_bit--; }
+			begin <<= 1;
+			end <<= 1;
+			goto start;
+		}
+		if (begin >= h2)
+		{
+			otgruz(1);
+			while (bad_bit) { otgruz(0); bad_bit--; }
+			begin = (begin - h2) << 1;
+			end = (end - h2) << 1;
+			goto start;
+		}
+		if ((begin >= h1) && (end <= h3))
+		{
+			begin = (begin - h1) << 1;
+			end = (end - h1) << 1;
+			bad_bit++;
+			goto start;
+		}
+		for (u64 j = c + 1; j < 257; j++) frequency[j]++;
+	}
+	uchar c = ((begin <= h1) && (end >= h2));
+	otgruz(c ^ 1);
+	otgruz(c);
+	while (bad_bit) { otgruz(c); bad_bit--; }
+	if (r1n) res.push_back(r1 << (8 - r1n));
+	return r1n;
+}
+
+uchar ppm2(const std::vector<uchar>& data, std::vector<uchar>& res, u64 g, double kk)
+{
+	kkk6[g] = kk;
+	res.clear();
+	if (data.empty()) return 0;
+
+
+	u64 bad_bit = 0; // количество плохих бит
+	uchar bit_size = 0;
+	u64 s2 = data.size();
+	while (s2) { bit_size++; s2 >>= 1; }
+	uchar r1 = bit_size - 1; // активный байт
+	uchar r1n = 6; // количество бит в активном байте
+	auto otgruz = [&](uchar bit)
+	{
+		r1 = (r1 << 1) + bit;
+		if (++r1n == 8)
+		{
+			res.push_back(r1);
+			r1 = r1n = 0;
+		}
+	};
+	for (uchar ii = 0; ii < bit_size; ii++) otgruz((data.size() >> ii) & 1);
+	u64 frequency[257]; // частичные суммы
+	for (u64 ii = 0; ii < 257; ii++) frequency[ii] = ii;
+	u64 begin = h0; // начало рабочего диапазона
+	u64 end = h4; // конец рабочего диапазона
+
+
+	_ppc ppc;
+	_frequency f;
+	for (u64 i = 0; i < data.size(); i++)
+	{
+		u64 c = data[i]; // активный символ
+
+
+
+		f.start(kkk6[0]);
+		for (auto& jj : ppc.next) f.frequency[jj.first] += jj.second.frequency;
+		_ppc* ppc2 = &ppc;
+		for (u64 j = 1; j <= g; j++)
+		{
+			if (j > i) break;
+			f.norm(kkk6[j]);
 			ppc2 = &ppc2->next[data[i - j]];
 			for (auto& jj : ppc2->next) f.frequency[jj.first] += jj.second.frequency;
 		}

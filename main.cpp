@@ -129,9 +129,18 @@ void test_ppm(std::vector<std::string>& parameters)
 	std::wcout << L"размер: " << std::to_wstring(data.size()) << std::endl;
 
 	i64 n = 0;
-	if (!parameters.empty()) n = std::stoi(parameters[0]);
-	if (n < 0) n = 0;
+	if (parameters.size() >= 1)
+	{
+		n = std::stoi(parameters[0]);
+		if (n < 0) n = 0;
+	}
+	double kk = 1;
+	if (parameters.size() >= 1)
+	{
+		kk = std::stod(parameters[1]);
+	}
 	std::wcout << L"порядок = " << std::to_wstring(n) << std::endl;
+	std::wcout << L"kk = " << std::to_wstring(kk) << std::endl;
 
 	i64 mindt = 1000000000;
 	i64 maxdt = 0;
@@ -139,7 +148,7 @@ void test_ppm(std::vector<std::string>& parameters)
 
 	{
 		auto tt = std::chrono::high_resolution_clock::now();
-		ppm(data, res, n);
+		ppm2(data, res, n, kk);
 		std::chrono::nanoseconds dt = std::chrono::high_resolution_clock::now() - tt;
 		i64 dtt = dt.count() / 1000;
 		if (dtt < mindt) mindt = dtt;
