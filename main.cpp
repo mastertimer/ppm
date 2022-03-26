@@ -146,9 +146,10 @@ void test_ppm(std::vector<std::string>& parameters)
 	i64 maxdt = 0;
 	i64 summdt = 0;
 
+	uchar db = 0;
 	{
 		auto tt = std::chrono::high_resolution_clock::now();
-		ppm2(data, res, n, kk);
+		db = ppm2(data, res, n, kk);
 		std::chrono::nanoseconds dt = std::chrono::high_resolution_clock::now() - tt;
 		i64 dtt = dt.count() / 1000;
 		if (dtt < mindt) mindt = dtt;
@@ -157,8 +158,13 @@ void test_ppm(std::vector<std::string>& parameters)
 	}
 
 	double v = res.size();
-	std::wcout << L"ppm:    " << double_to_wstring(v, 0) << std::endl;
-	std::wcout << L"время, мксек:  " << std::to_wstring(mindt) << std::endl;
+	if (db > 0)
+	{
+		v -= 1;
+		v += db * 0.1;
+	}
+//	std::wcout << L"время, мксек:  " << std::to_wstring(mindt) << std::endl;
+	std::wcout << L"ppm:           " << double_to_wstring(v, 1) << std::endl << std::endl;
 }
 
 int main(int argc, char* argv[])
