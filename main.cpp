@@ -134,23 +134,19 @@ void test_ppm(std::vector<std::string>& parameters)
 		n = std::stoi(parameters[0]);
 		if (n < 0) n = 0;
 	}
-	double kk = 1;
-	if (parameters.size() >= 2)
-	{
-		kk = std::stod(parameters[1]);
-	}
 	std::wcout << L"порядок = " << std::to_wstring(n) << std::endl;
-	std::wcout << L"kk = " << std::to_wstring(kk) << std::endl;
 
 	i64 mindt = 1000000000;
 	i64 maxdt = 0;
 	i64 summdt = 0;
 
 	uchar db = 0;
+	double db2 = 0;
 	{
 		auto tt = std::chrono::high_resolution_clock::now();
-		db = ppm2(data, res, n, kk);
-//		db = ppm(data, res, n);
+//		db = ppm2(data, res, n);
+		db = ppm(data, res, n);
+		db2 = ppm_test(data, n);
 		std::chrono::nanoseconds dt = std::chrono::high_resolution_clock::now() - tt;
 		i64 dtt = dt.count() / 1000;
 		if (dtt < mindt) mindt = dtt;
@@ -165,7 +161,8 @@ void test_ppm(std::vector<std::string>& parameters)
 		v += db * 0.1;
 	}
 	std::wcout << L"время, мксек:  " << std::to_wstring(mindt) << std::endl;
-	std::wcout << L"ppm:           " << double_to_wstring(v, 1) << std::endl << std::endl;
+	std::wcout << L"ppm:           " << double_to_wstring(v, 1) << std::endl;
+	std::wcout << L"ppm_test:      " << double_to_wstring(db2, 1) << std::endl << std::endl;
 }
 
 int main(int argc, char* argv[])
