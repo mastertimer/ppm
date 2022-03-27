@@ -40,8 +40,8 @@ std::vector<uchar> generate_vector(_frequency2& f)
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 constexpr double kkk4 = 22.0; // 22.0
-
-double kkk6[] = { 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0, 22.0 }; // 22.0
+//                  0   1    2    3    4    5    6    7   8    9   10   11   12  13   14  15  16
+double kkk6[] = { 300, 15, 100, 190, 3.3, 220, 600, 1.7, 60, 256, 240, 500, 400, 22, 900, 12,  5 }; // 22.0
 
 struct _frequency
 {
@@ -196,7 +196,7 @@ uchar ppm(const std::vector<uchar>& data, std::vector<uchar>& res, u64 g)
 
 uchar ppm2(const std::vector<uchar>& data, std::vector<uchar>& res, u64 g, double kk)
 {
-	kkk6[g] = kk;
+	kkk6[7] = kk;
 	res.clear();
 	if (data.empty()) return 0;
 
@@ -293,3 +293,7 @@ uchar ppm2(const std::vector<uchar>& data, std::vector<uchar>& res, u64 g, doubl
 	return r1n;
 }
 
+double ppm_test(const std::vector<uchar>& data, u64 g)
+{
+
+}

@@ -23,5 +23,6 @@ std::vector<uchar> generate_vector(_frequency2& f);
 
 uchar ppm(const std::vector<uchar>& data, std::vector<uchar>& res, u64 g = 0);
 uchar ppm2(const std::vector<uchar>& data, std::vector<uchar>& res, u64 g, double kk);
+double ppm_test(const std::vector<uchar>& data, u64 g);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

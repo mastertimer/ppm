@@ -135,7 +135,7 @@ void test_ppm(std::vector<std::string>& parameters)
 		if (n < 0) n = 0;
 	}
 	double kk = 1;
-	if (parameters.size() >= 1)
+	if (parameters.size() >= 2)
 	{
 		kk = std::stod(parameters[1]);
 	}
@@ -150,6 +150,7 @@ void test_ppm(std::vector<std::string>& parameters)
 	{
 		auto tt = std::chrono::high_resolution_clock::now();
 		db = ppm2(data, res, n, kk);
+//		db = ppm(data, res, n);
 		std::chrono::nanoseconds dt = std::chrono::high_resolution_clock::now() - tt;
 		i64 dtt = dt.count() / 1000;
 		if (dtt < mindt) mindt = dtt;
@@ -163,7 +164,7 @@ void test_ppm(std::vector<std::string>& parameters)
 		v -= 1;
 		v += db * 0.1;
 	}
-//	std::wcout << L"время, мксек:  " << std::to_wstring(mindt) << std::endl;
+	std::wcout << L"время, мксек:  " << std::to_wstring(mindt) << std::endl;
 	std::wcout << L"ppm:           " << double_to_wstring(v, 1) << std::endl << std::endl;
 }
 
