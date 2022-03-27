@@ -296,27 +296,31 @@ double ppm_test(const std::vector<uchar>& data, u64 g)
 {
 	if (data.empty()) return 0;
 	double size = 0;
-	u64 frequency[257]; // частичные суммы
-	for (u64 ii = 0; ii < 257; ii++) frequency[ii] = ii;
 	_ppc ppc;
 	_frequency f;
 	for (u64 i = 0; i < data.size(); i++)
 	{
 		u64 c = data[i]; // активный символ
-		f.start();
-		for (auto& jj : ppc.next) f.frequency[jj.first] += jj.second.frequency;
+		f.start(256);
+		for (auto& jj : ppc.next)
+		{
+			double mm = 256.0 / kkk4;
+			f.frequency[jj.first] += jj.second.frequency * mm;
+		}
 		_ppc* ppc2 = &ppc;
 		for (u64 j = 1; j <= g; j++)
 		{
 			if (j > i) break;
-			f.norm();
+			f.norm(256);
 			ppc2 = &ppc2->next[data[i - j]];
-			for (auto& jj : ppc2->next) f.frequency[jj.first] += jj.second.frequency;
+			for (auto& jj : ppc2->next)
+			{
+				double mm = 256.0 / kkk4;
+				f.frequency[jj.first] += jj.second.frequency * mm;
+			}
 		}
-		f.norm(1073741000, frequency);
 		f.norm(1);
-//		size += log(f.frequency[c]);
-		size += log((frequency[c + 1] - frequency[c]) / 1073741000.0);
+		size += log(f.frequency[c]);
 		ppc.frequency++;
 		ppc.next[(uchar)c].frequency++;
 		ppc2 = &ppc;
