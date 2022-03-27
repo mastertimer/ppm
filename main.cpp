@@ -145,7 +145,7 @@ void test_ppm(std::vector<std::string>& parameters)
 	{
 		auto tt = std::chrono::high_resolution_clock::now();
 //		db = ppm2(data, res, n);
-		db = ppm(data, res, n);
+//		db = ppm(data, res, n);
 		db2 = ppm_test(data, n);
 		std::chrono::nanoseconds dt = std::chrono::high_resolution_clock::now() - tt;
 		i64 dtt = dt.count() / 1000;
@@ -153,7 +153,6 @@ void test_ppm(std::vector<std::string>& parameters)
 		if (dtt > maxdt) maxdt = dtt;
 		summdt += dtt;
 	}
-
 	double v = res.size();
 	if (db > 0)
 	{
@@ -163,6 +162,40 @@ void test_ppm(std::vector<std::string>& parameters)
 	std::wcout << L"время, мксек:  " << std::to_wstring(mindt) << std::endl;
 	std::wcout << L"ppm:           " << double_to_wstring(v, 1) << std::endl;
 	std::wcout << L"ppm_test:      " << double_to_wstring(db2, 1) << std::endl << std::endl;
+}
+
+void eee(std::vector<std::vector<i64>>& res, std::vector<i64> tek, i64 sum, i64 maxx)
+{
+	if (sum == 0)
+	{
+		res.push_back(tek);
+		return;
+	}
+	for (i64 i = std::min(sum, maxx); i >= 1; i--)
+	{
+		tek.push_back(i);
+		eee(res, tek, sum - i, i);
+		tek.pop_back();
+	}
+}
+
+void razl(std::vector<std::string>& parameters)
+{
+	i64 n = 1;
+	if (parameters.size() >= 1)
+	{
+		n = std::stoi(parameters[0]);
+		if (n < 1) n = 1;
+	}
+	std::wcout << L"разложение числа: " << n << std::endl;
+	std::vector<std::vector<i64>> res;
+	eee(res, {}, n, n);
+/*	for (auto& i : res)
+	{
+		for (auto& j : i) std::wcout << j << L" ";
+		std::wcout << std::endl;
+	}*/
+	std::wcout << L"всего разложений: " << res.size() << std::endl;
 }
 
 int main(int argc, char* argv[])
@@ -184,6 +217,8 @@ int main(int argc, char* argv[])
 			test_arithmetic_coding(parameters);
 		else if (command_name == "ppm")
 			test_ppm(parameters);
+		else if (command_name == "r")
+			razl(parameters);
 		else if (command_name == "exit")
 			break;
 		else
