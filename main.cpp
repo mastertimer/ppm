@@ -145,7 +145,7 @@ void test_ppm(std::vector<std::string>& parameters)
 	{
 		auto tt = std::chrono::high_resolution_clock::now();
 //		db = ppm2(data, res, n);
-//		db = ppm(data, res, n);
+		db = ppm(data, res, n);// в начале биты используемых символов
 		db2 = ppm_test(data, n);
 		std::chrono::nanoseconds dt = std::chrono::high_resolution_clock::now() - tt;
 		i64 dtt = dt.count() / 1000;
