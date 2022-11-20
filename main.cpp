@@ -1,10 +1,10 @@
 ﻿#include <iostream>
 #include <chrono>
 
-#include "arithmetic_coding.h"
-#include "compression.h"
+#include "..\\library\arithmetic_coding.h"
+#include "..\\library\compression.h"
 
-std::wstring test_file = L"e:\\ppm\\data\\t110521.txt";
+std::wstring test_file = L"e:\\programs\\ppm\\data\\t110521.txt";
 std::wstring test_file2 = L"data/t110521.txt";
 
 std::string command_decomposition(const std::string& cmd, std::vector<std::string>& parameters)

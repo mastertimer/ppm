@@ -147,15 +147,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="arithmetic_coding.cpp" />
-    <ClCompile Include="basic.cpp" />
-    <ClCompile Include="compression.cpp" />
+    <ClCompile Include="..\library\arithmetic_coding.cpp" />
+    <ClCompile Include="..\library\basic.cpp" />
+    <ClCompile Include="..\library\compression.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="arithmetic_coding.h" />
-    <ClInclude Include="basic.h" />
-    <ClInclude Include="compression.h" />
+    <ClInclude Include="..\library\arithmetic_coding.h" />
+    <ClInclude Include="..\library\basic.h" />
+    <ClInclude Include="..\library\compression.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
