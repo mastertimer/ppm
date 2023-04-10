@@ -1,5 +1,7 @@
-﻿#include <map>
-#include "compression.h"
+﻿#include "compression.h"
+
+#include <map>
+#include <functional>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -10,6 +12,62 @@ namespace
 	constexpr u64 h2 =  0x80000000; // 2/4
 	constexpr u64 h3 =  0xc0000000; // 3/4
 	constexpr u64 h4 = 0x100000000; // 4/4
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+double golden_section_search(std::function<double(double)> func, double a, double b, double tol)
+{
+	double gr = 2.0 / (std::sqrt(5.0) + 1.0);
+	double c = b - (b - a) * gr;
+	double d = a + (b - a) * gr;
+	double fc = func(c);
+	double fd = func(d);
+
+	while (std::abs(c - d) > tol)
+		if (fc < fd)
+		{
+			a = c;
+			c = d;
+			d = a + (b - a) * gr;
+			fc = fd;
+			fd = func(d);
+		}
+		else
+		{
+			b = d;
+			d = c;
+			c = b - (b - a) * gr;
+			fd = fc;
+			fc = func(c);
+		}
+	double fa = func(a);
+	double fb = func(b);
+	return std::max(std::max(fc, fd), std::max(fa, fb));
+}
+
+double max_of_function(std::function<double(double)> func, double a, double b)
+{
+	if (b < a) std::swap(a, b);
+	constexpr i64 intervals_number = 2207;
+	double dx = (b - a) / intervals_number;
+	double precision = std::max(abs(a), abs(b)) * 1e-13;
+	auto f0 = func(a);
+	auto f1 = func(a + dx);
+	double maxx = std::max(f0, func(b));
+	for (i64 i = 2; i <= intervals_number; i++)
+	{
+		double x2 = (i == intervals_number) ? b : a + dx * i;
+		double f2 = func(x2);
+		if (f1 >= f2 && f1 >= f0)
+		{
+			double gs = golden_section_search(func, a + dx * (i - 2), x2, precision);
+			maxx = std::max(maxx, gs);
+		}
+		f0 = f1;
+		f1 = f2;
+	}
+	return maxx;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
