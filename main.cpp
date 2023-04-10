@@ -1,7 +1,6 @@
 ﻿#include <iostream>
 #include <chrono>
 
-#include "arithmetic_coding.h"
 #include "compression.h"
 
 std::wstring test_file = L"e:\\programs\\ppm\\data\\t110521.txt";

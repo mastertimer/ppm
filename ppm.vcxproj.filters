@@ -13,18 +13,12 @@
     <ClCompile Include="..\library\basic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="arithmetic_coding.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="compression.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\library\basic.h">
-      <Filter>Исходные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="arithmetic_coding.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
     <ClInclude Include="compression.h">
