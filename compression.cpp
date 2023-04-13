@@ -12,12 +12,14 @@ namespace
 	constexpr u64 h2 =  0x80000000; // 2/4
 	constexpr u64 h3 =  0xc0000000; // 3/4
 	constexpr u64 h4 = 0x100000000; // 4/4
+
+	const double klog2 = -1.0 / log(2);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double golden_section_search(std::function<double(double)> func, double a, double b, double tol)
-{
+{ // ChatGPT
 	double gr = 2.0 / (std::sqrt(5.0) + 1.0);
 	double c = b - (b - a) * gr;
 	double d = a + (b - a) * gr;
@@ -68,6 +70,12 @@ double max_of_function(std::function<double(double)> func, double a, double b)
 		f1 = f2;
 	}
 	return maxx;
+}
+
+double entropy1bit(double p)
+{
+	const double q = 1.0 - p;
+	return klog2 * (p * log(p) + q * log(q));
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
