@@ -78,6 +78,41 @@ double entropy1bit(double p)
 	return klog2 * (p * log(p) + q * log(q));
 }
 
+int fac(int x)
+{
+	static const int table[] = { 1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600 };
+	if ((x >= 0) && (x <= 12)) return table[x];
+	return 0;
+}
+
+int pow(double a, int n) // a^n
+{
+	auto nn = abs(n);
+	double res = 1;
+	for (int i = 1; i <= nn; i++) res *= a;
+	return (n >= 0) ? res : (1.0 / res);
+}
+
+// энтропия сжатого бита
+// n - количество предыдущих бит
+// p1 - реальная вероятность 1
+// k1[i] - вероятность 1, если до этого было i (из n) 1
+double entropy_of_compressed(int n, double p1, std::vector<double>& k1)
+{
+	if (k1.size() != n + 1) return 0;
+	double e = 0;
+	double p0 = 1.0 - p1;
+	int fac_n = fac(n);
+	for (int i = 0; i <= n; i++)
+	{
+		int n_i = n - i;
+		int c_i_n = fac_n / (fac(i) * fac(n_i));
+		double p = pow(p1, i) * pow(p0, n_i);
+		e += c_i_n * p * (p1 * log(k1[i]) + p0 * log(1 - k1[i]));
+	}
+	return klog2 * e;
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void arithmetic_coding(const std::vector<uchar>& data, _bit_vector& res)
