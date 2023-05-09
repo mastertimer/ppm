@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <vector>
+#include <functional>
 
 #include "basic.h"
 
@@ -39,5 +40,7 @@ double ppm_test(const std::vector<uchar>& data, u64 g);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double delta_entropy(int n, double p1, std::vector<double>& k1);
+double max_of_function(std::function<double(double)> func, double a, double b);
+double entropy1bit(double p);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

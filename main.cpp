@@ -116,13 +116,39 @@ void test_arithmetic_coding(std::vector<std::string>& parameters)
 	std::wcout << L"максимальное время, мксек: " << std::to_wstring(maxdt) << std::endl;
 }
 
+double f1(double x)
+{
+	static int n = 1;
+	static std::vector<double> k1 = { 0.2, 0.8 };
+	return delta_entropy(n, x, k1);
+}
+
+std::pair<double, double> find_k()
+{
+	int n = 1;
+	std::vector<double> k1 = { 0.5, 0.5 };
+	auto ff = [&](double x) { return delta_entropy(n, x, k1); };
+	auto x_m = 0.5;
+	auto m_m = max_of_function(ff, 0, 1);
+	for (double x = 0.5; x < 1; x += 0.00001)
+	{
+		k1[0] = 1.0 - x;
+		k1[1] = x;
+		auto m = max_of_function(ff, 0, 1);
+		if (m < m_m)
+		{
+			m_m = m;
+			x_m = x;
+		}
+	}
+	return { x_m,m_m };
+}
+
 void test_test(std::vector<std::string>& parameters)
 {
-	int n = 3;
-	double p1 = 0.55;
-	std::vector<double> k1 = { 0.23, 0.43, 0.57, 0.77 };
-	auto d = delta_entropy(n, p1, k1);
-	std::wcout << d << std::endl;
+	auto k = find_k();
+	std::wcout << k.first << std::endl;
+	std::wcout << k.second << std::endl;
 }
 
 void test_ppm(std::vector<std::string>& parameters)

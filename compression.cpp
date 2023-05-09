@@ -1,7 +1,6 @@
 ﻿#include "compression.h"
 
 #include <map>
-#include <functional>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -74,6 +73,7 @@ double max_of_function(std::function<double(double)> func, double a, double b)
 
 double entropy1bit(double p)
 {
+	if (p == 0 || p == 1.0) return 0;
 	const double q = 1.0 - p;
 	return klog2 * (p * log(p) + q * log(q));
 }
