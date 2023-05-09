@@ -85,7 +85,7 @@ int fac(int x)
 	return 0;
 }
 
-int pow(double a, int n) // a^n
+double pow(double a, int n) // a^n
 {
 	auto nn = abs(n);
 	double res = 1;
@@ -111,6 +111,11 @@ double entropy_of_compressed(int n, double p1, std::vector<double>& k1)
 		e += c_i_n * p * (p1 * log(k1[i]) + p0 * log(1 - k1[i]));
 	}
 	return klog2 * e;
+}
+
+double delta_entropy(int n, double p1, std::vector<double>& k1)
+{
+	return entropy_of_compressed(n, p1, k1) - entropy1bit(p1);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

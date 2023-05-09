@@ -116,6 +116,15 @@ void test_arithmetic_coding(std::vector<std::string>& parameters)
 	std::wcout << L"максимальное время, мксек: " << std::to_wstring(maxdt) << std::endl;
 }
 
+void test_test(std::vector<std::string>& parameters)
+{
+	int n = 3;
+	double p1 = 0.55;
+	std::vector<double> k1 = { 0.23, 0.43, 0.57, 0.77 };
+	auto d = delta_entropy(n, p1, k1);
+	std::wcout << d << std::endl;
+}
+
 void test_ppm(std::vector<std::string>& parameters)
 {
 	std::wcout << L"файл: " << test_file << std::endl;
@@ -214,6 +223,8 @@ int main(int argc, char* argv[])
 		std::string command_name = command_decomposition(cmd, parameters);
 		if (command_name == "a")
 			test_arithmetic_coding(parameters);
+		else if (command_name == "b")
+			test_test(parameters);
 		else if (command_name == "ppm")
 			test_ppm(parameters);
 		else if (command_name == "r")
