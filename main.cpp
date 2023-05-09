@@ -123,15 +123,17 @@ double f1(double x)
 	return delta_entropy(n, x, k1);
 }
 
-std::pair<double, double> find_k()
+std::pair<double, double> find_k1()
 {
 	int n = 1;
 	std::vector<double> k1 = { 0.5, 0.5 };
+	double delta = 0.0001;
 	auto ff = [&](double x) { return delta_entropy(n, x, k1); };
 	auto x_m = 0.5;
 	auto m_m = max_of_function(ff, 0, 1);
-	for (double x = 0.5; x < 1; x += 0.00001)
+	for (;;)
 	{
+		double x = x_m + delta;
 		k1[0] = 1.0 - x;
 		k1[1] = x;
 		auto m = max_of_function(ff, 0, 1);
@@ -139,14 +141,61 @@ std::pair<double, double> find_k()
 		{
 			m_m = m;
 			x_m = x;
+			continue;
 		}
+		x = x_m - delta;
+		k1[0] = 1.0 - x;
+		k1[1] = x;
+		m = max_of_function(ff, 0, 1);
+		if (m < m_m)
+		{
+			m_m = m;
+			x_m = x;
+			continue;
+		}
+		break;
+	}
+	return { x_m,m_m };
+}
+
+std::pair<double, double> find_k2()
+{
+	int n = 2;
+	std::vector<double> k1 = { 0.5, 0.5, 0.5 };
+	double delta = 0.0001;
+	auto ff = [&](double x) { return delta_entropy(n, x, k1); };
+	auto x_m = 0.5;
+	auto m_m = max_of_function(ff, 0, 1);
+	for (;;)
+	{
+		double x = x_m + delta;
+		k1[0] = 1.0 - x;
+		k1[2] = x;
+		auto m = max_of_function(ff, 0, 1);
+		if (m < m_m)
+		{
+			m_m = m;
+			x_m = x;
+			continue;
+		}
+		x = x_m - delta;
+		k1[0] = 1.0 - x;
+		k1[2] = x;
+		m = max_of_function(ff, 0, 1);
+		if (m < m_m)
+		{
+			m_m = m;
+			x_m = x;
+			continue;
+		}
+		break;
 	}
 	return { x_m,m_m };
 }
 
 void test_test(std::vector<std::string>& parameters)
 {
-	auto k = find_k();
+	auto k = find_k2();
 	std::wcout << k.first << std::endl;
 	std::wcout << k.second << std::endl;
 }
