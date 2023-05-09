@@ -193,9 +193,36 @@ std::pair<double, double> find_k2()
 	return { x_m,m_m };
 }
 
+std::pair<double, double> find_k3()
+{
+	int n = 3;
+	auto x1_m = 0.5;
+	auto x2_m = 0.5;
+	std::vector<double> k1 = { 1.0 - x2_m, 1.0 - x1_m, x1_m, x2_m };
+	double delta = 0.0001;
+	auto ff = [&](double x) { return delta_entropy(n, x, k1); };
+	auto m_m = max_of_function(ff, 0, 1);
+	for (double x1 = 0.5; x1 < 1.0; x1 += delta)
+		for (double x2 = x1; x2 < 1.0; x2 += delta)
+		{
+			k1[0] = 1.0 - x2;
+			k1[1] = 1.0 - x1;
+			k1[2] = x1;
+			k1[3] = x2;
+			auto m = max_of_function(ff, 0, 1);
+			if (m < m_m)
+			{
+				m_m = m;
+				x1_m = x1;
+				x2_m = x2;
+			}
+		}
+	return { x1_m,x2_m };
+}
+
 void test_test(std::vector<std::string>& parameters)
 {
-	auto k = find_k2();
+	auto k = find_k3();
 	std::wcout << k.first << std::endl;
 	std::wcout << k.second << std::endl;
 }
