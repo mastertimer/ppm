@@ -10,7 +10,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\library\basic.cpp">
+    <ClCompile Include="..\mutator\library\basic.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="compression.cpp">
@@ -18,7 +18,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\library\basic.h">
+    <ClInclude Include="..\mutator\library\basic.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
     <ClInclude Include="compression.h">
